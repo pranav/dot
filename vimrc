@@ -49,6 +49,11 @@ Plugin 'mattn/emmet-vim'
 Plugin 'davidhalter/jedi-vim'
 Plugin 'Shougo/neocomplete.vim'
 Plugin 'kien/ctrlp.vim'
+Plugin 'rodjek/vim-puppet'
+Plugin 'godlygeek/tabular'
+Plugin 'scrooloose/syntastic'
+Plugin 'tpope/vim-endwise'
+Plugin 'Townk/vim-autoclose'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -74,3 +79,7 @@ autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 " Set minimum syntax keyword length.
 let g:neocomplete#sources#syntax#min_keyword_length = 3
+
+colorscheme Tomorrow-Night
+"set background=light
+"hi Normal ctermbg=NONE
