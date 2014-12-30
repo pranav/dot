@@ -12,6 +12,8 @@ set numberwidth=5 "PADDING!
 " Display extra whitespace
 set list listchars=tab:»·,trail:·
 
+set expandtab
+
 let mapleader = " "
 
 " Switch between last 2 files
@@ -54,6 +56,9 @@ Plugin 'godlygeek/tabular'
 Plugin 'scrooloose/syntastic'
 Plugin 'tpope/vim-endwise'
 Plugin 'Townk/vim-autoclose'
+Plugin 'kchmck/vim-coffee-script'
+Plugin 'fatih/vim-go'
+Plugin 'majutsushi/tagbar'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -62,23 +67,41 @@ filetype plugin indent on    " required
 " End Vundle
 "
 "
+"== Jedi =="
+let g:jedi#popup_select_first = 0
+let g:jedi#auto_vim_configuration = 0
+let g:jedi#completions_enabled = 0
 
 "==  Emmet ==
 let g:user_emmet_expandabbr_key = '<c-e>'
 
 "== NeoComplete ==
 let g:neocomplete#enable_at_startup = 1
-" AutoComplPop like behavior.
-let g:neocomplete#enable_auto_select = 0
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-"autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType python setlocal omnifunc=jedi#completions
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 " <TAB>: completion.
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 " Set minimum syntax keyword length.
 let g:neocomplete#sources#syntax#min_keyword_length = 3
+" <CR>: close popup and save indent.
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+  return neocomplete#close_popup() . "\<CR>"
+  " For no inserting <CR> key.
+  return pumvisible() ? neocomplete#close_popup() : "\<CR>"
+endfunction
+inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+if !exists('g:neocomplete#force_omni_input_patterns')
+  let g:neocomplete#force_omni_input_patterns = {}
+endif
+let g:neocomplete#force_omni_input_patterns.python = '\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*'
+
+
+"== Tagbar ==
+nmap <F8> :TagbarToggle<CR>
 
 colorscheme Tomorrow-Night
 "set background=light
